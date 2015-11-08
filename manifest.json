@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "reddit fallen",
+    "description": "Style reddit.com to look like a fallout terminal",
+    "version": "0.0.1",
+    "permissions": [
+        "http://*.reddit.com/",
+        "https://*.reddit.com/"
+    ],
+    "web_accessible_resources": [
+        "FSEX300.woff"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*.reddit.com/*",
+                "https://*.reddit.com/*"
+            ],
+            "js": [
+                "fallout.js"
+            ],
+            "css": [
+                "fallout.css"
+            ],
+            "run_at": "document_end"
+        }
+    ]
+}
