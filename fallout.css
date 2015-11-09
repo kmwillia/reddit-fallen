@@ -18,44 +18,9 @@ body {
     color: #29e18c !important;
 }
 
-/* Override default styles so FOUT isn't as jarring */
-.thing.link * {
-    color: #29e18c;
-    font-family: "Fixedsys Excelsior 3.01", "Courier New", Courier, monospace !important;
-    margin: auto 0 auto 0.5rem;
-}
-
-.thing.link .rank {
-    color: #29e18c;
-}
-
-.thing.link a.title {
-    color: #29e18c;
-    height: 1rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.thing.link *:not(.rank):not(.midcol):not(.arrow):not(.entry):not(.title):not(.subreddit) {
-    display: none;
-}
-
-
-/* Custom Styles */
-.fallout-screenlines {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100%;
-    z-index: -1;
-    background: repeating-linear-gradient(  3deg,
-                                            transparent,
-                                            transparent 5px,
-                                            rgba(41, 225, 140, 0.025) 5px,
-                                            rgba(41, 225, 140, 0.025) 10px);
+/* Initially hide the siteTable and then display it once we've updated its contents */
+#siteTable, #progressIndicator {
+    display: none !important;
 }
 
 #siteTable_organic {
@@ -65,69 +30,70 @@ body {
     width: 0;
 }
 
-.console-text {
+/* Theme styles */
+.fallout-screenlines {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    z-index: -1;
+    background: repeating-linear-gradient(  0deg,
+                                            transparent,
+                                            transparent 5px,
+                                            rgba(41, 225, 140, 0.025) 5px,
+                                            rgba(41, 225, 140, 0.025) 10px);
+}
+
+.ft-thing {
+    display: flex;
+    flex-direction: row;
+    font-size: 1rem;
+}
+
+.ft-console {
     color: #29e18c !important;
     font-family: "Fixedsys Excelsior 3.01", "Courier New", Courier, monospace !important;
 }
 
-.fallout-thing {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin-bottom: 0.5rem;
-}
-
-.fallout-thing .fallout-cell {
-    display: inline-block;
+.ft-cell {
+    flex-shrink: 0;
+    flex-grow: 0;
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 1rem;
-    flex-grow: 0;
-    flex-shrink: 0;
+    padding-left: 0.5rem;
 }
 
-.fallout-rank {
+.ft-rank {
+    width: 1rem;
+    text-align: right;
+}
+
+.ft-vote {
+    width: 1.5rem;
+}
+
+.ft-score {
     width: 2rem;
     text-align: right;
 }
 
-.fallout-vote {
-    margin-left: 0.5rem;
-    margin-right: 0;
-}
-
-.fallout-score {
-    margin-left: 0.5rem;
-    color: #29e18c;
-    width: 2rem;
-    text-align: right;
-}
-
-.fallout-title {
+.ft-title {
     display: inline-block;
-    margin-left: 0.5rem;
-    width: 29rem;
+    width: 20rem;
     height: 1rem;
-    text-overflow: ellipsis;
+    min-width: 10rem;
+    flex-shrink: 1;
     overflow: hidden;
     white-space: nowrap;
-    flex-shrink: 1 !important;
+    text-overflow: ellipsis;
 }
 
-.fallout-comment {
-    color: #29e18c;
-}
-
-.fallout-subreddit {
+.ft-sub {
     margin-left: 2rem;
-    font-size: 1rem;
-    white-space: nowrap;
 }
 
-.fallout-nextprev a {
-    display: inline-block;
-    font-size: 1.5rem;
-    margin-left: 2rem;
-    margin-right: 0.5rem;
-    color: #29e18c;
+.ft-nav {
+    font-size: 150%;
 }

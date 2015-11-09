@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "reddit fallen",
     "description": "Style reddit.com to look like a fallout terminal",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "permissions": [
         "http://*.reddit.com/",
         "https://*.reddit.com/"

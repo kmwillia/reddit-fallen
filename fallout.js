@@ -2,88 +2,74 @@
 
 (function() {
     //Add CRT screen lines
-    var screenLines = document.createElement('div');
+    let screenLines = document.createElement('div');
     screenLines.classList.add('fallout-screenlines');
     document.body.appendChild(screenLines);
     //Make changes to the story rows
-    convertTableRows();
+    let oldTable = document.getElementById('siteTable');
+    let newTable = convertTableRows();
     //Change the previous and next buttons
-    convertPrevNext();
+    let newNav = convertPrevNext();
+    newTable.appendChild(newNav);
+    //Swap tables
+    oldTable.parentNode.replaceChild(newTable, oldTable);
 
-    /**
-     * @function convertTableRows
-     * Removes unused elements from the DOM and adds extension specific classes
-     * to those it does use for easier, and more thorough styling
-     */
     function convertTableRows() {
-        var list = document.getElementById('siteTable');
-        [].forEach.call(list.getElementsByClassName('thing'), function(thing) {
-            let rank = thing.getElementsByClassName('rank')[0];
-            let vote = thing.getElementsByClassName('midcol')[0];
-            let arrows = [].slice.call(vote.getElementsByClassName('arrow'));
+        var newSt = document.getElementById('siteTable').cloneNode(false);
+        newSt.id = 'ftSiteTable';
+        var fragment = document.createDocumentFragment();
+        Array.from(document.querySelectorAll('#siteTable .thing'), (thing) => {
+            let newThing = thing.cloneNode(false);
+            newThing.classList.add('ft-thing');
+            let rate = document.createElement('div');
+            rate.innerText = thing.getElementsByClassName('rank')[0].innerText;
+            rate.classList.add('ft-console', 'ft-cell', 'ft-rank');
+            newThing.appendChild(rate);
+            let vote = document.createElement('div');
+            Array.from(thing.getElementsByClassName('arrow')).forEach((arrow) => {
+                vote.appendChild(arrow);
+            });
+            vote.classList.add('ft-cell', 'ft-vote');
+            newThing.appendChild(vote);
             let score = document.createElement('div');
-            let scores = [].slice.call(thing.getElementsByClassName('score'));
+            score.innerText = thing.querySelector('.score.unvoted').innerText;
+            score.classList.add('ft-console', 'ft-cell', 'ft-score');
+            newThing.appendChild(score);
             let title = thing.querySelector('a.title');
-            let comment = thing.getElementsByClassName('comments')[0];
-            let subreddit = thing.getElementsByClassName('subreddit')[0] || document.createElement('span');
-            let expando = thing.getElementsByClassName('expando')[0];
+            let newTitle = document.createElement('a');
+            newTitle.innerText = title.innerText.toUpperCase();
+            newTitle.setAttribute('href', title.getAttribute('href'));
+            newTitle.setAttribute('title', newTitle.innerText);
+            newTitle.classList.add('ft-console', 'ft-cell', 'ft-title');
+            newThing.appendChild(newTitle);
+            let sub =   thing.getElementsByClassName('subreddit')[0] ||
+                        document.createElement('div');
+            sub.innerText = garbleText(sub.innerText.slice(3), 9, 5, true);
+            sub.classList.add('ft-console', 'ft-cell', 'ft-sub');
+            newThing.appendChild(sub);
             //
-            rank.classList.add('console-text', 'fallout-rank', 'fallout-cell');
-            rank.classList.remove('rank');
-            vote.innerHTML = '';
-            arrows.forEach( (x) => vote.appendChild(x) );
-            vote.classList.remove('midcol');
-            vote.classList.add('fallout-vote', 'fallout-cell');
-            scores.forEach( (x) => score.appendChild(x) );
-            score.classList.add('console-text', 'fallout-score', 'fallout-cell');
-            title.classList.add('console-text', 'fallout-title', 'fallout-cell');
-            title.classList.remove('title');
-            title.innerText = title.innerText.toUpperCase();
-            if(title.innerText.length > 29) title.setAttribute('title', title.innerText);
-            comment.innerText = '>>';
-            comment.classList.add('fallout-comment', 'fallout-cell');
-            if(subreddit) {
-                subreddit.classList.add('console-text', 'fallout-subreddit', 'fallout-cell');
-                subreddit.classList.remove('subreddit');
-                subreddit.innerText = garbleText(subreddit.innerText.slice(3), 9, randomInt(3, 6), true);
-            }
-            //
-            thing.classList.add('fallout-thing');
-            thing.classList.remove('link');
-            thing.innerHTML = '';
-            thing.appendChild(rank);
-            thing.appendChild(vote);
-            thing.appendChild(score);
-            thing.appendChild(title);
-            thing.appendChild(comment);
-            if(subreddit) thing.appendChild(subreddit);
+            fragment.appendChild(newThing);
         });
+        //
+        newSt.appendChild(fragment);
+        return newSt;
     }
 
-    /**
-     * @function convertPrevNext
-     * Stylizes the Previous and Next buttons
-     */
+
     function convertPrevNext() {
-        var list = document.getElementById('siteTable');
-        var newButtons = document.createElement('div');
-        newButtons.classList.add('fallout-nextprev');
-        [].forEach.call(document.querySelectorAll('.nextprev a'), function(button) {
-            button.innerText = button.innerText.slice(0,4) === 'next' ? 'NEXT' : 'PREV';
-            newButtons.appendChild(button);
+        let newNav = document.createElement('div');
+        newNav.classList.add('ft-thing', 'ft-nav');
+        Array.from(document.querySelectorAll('#siteTable .nextprev a')).forEach((button) => {
+            let newButton = document.createElement('a');
+            newButton.innerText = button.innerText.toUpperCase().match(/[A-Z]+/g)[0];
+            newButton.setAttribute('href', button.getAttribute('href'));
+            newButton.classList.add('ft-console', 'ft-cell', 'ft-nav');
+            newNav.appendChild(newButton);
         });
-        list.replaceChild(newButtons, list.getElementsByClassName('nav-buttons')[0]);
+        return newNav;
     }
 
-    /**
-     * @function garbleText
-     * Converts a given string into a broken and 'corrupted' string
-     * @params {String} text String to garbleText
-     * @params {Int} rtnLength length of the final string to return
-     * @params {matchLength} length of substring to use from original string
-     * @params {caps} true to UPPERCASE the return string
-     * @return {String}
-     */
+
     function garbleText(text, rtnLength, matchLength, caps) {
         var fillerChars = [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
                             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -101,6 +87,7 @@
         }
         return rtnString;
     };
+
 
     function randomInt(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
