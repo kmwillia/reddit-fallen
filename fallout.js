@@ -20,6 +20,7 @@
         var fragment = document.createDocumentFragment();
         Array.from(document.querySelectorAll('#siteTable .thing'), (thing) => {
             let newThing = thing.cloneNode(false);
+            newThing.classList.remove('link');
             newThing.classList.add('ft-thing');
             let rate = document.createElement('div');
             rate.innerText = thing.getElementsByClassName('rank')[0].innerText;
@@ -42,9 +43,15 @@
             newTitle.setAttribute('title', newTitle.innerText);
             newTitle.classList.add('ft-console', 'ft-cell', 'ft-title');
             newThing.appendChild(newTitle);
+            let comment = document.createElement('a');
+            comment.innerText = '>>';
+            comment.setAttribute('href', thing.getElementsByClassName('comments')[0].getAttribute('href'));
+            comment.classList.add('ft-console', 'ft-cell', 'ft-comment');
+            newThing.appendChild(comment);
             let sub =   thing.getElementsByClassName('subreddit')[0] ||
                         document.createElement('div');
             sub.innerText = garbleText(sub.innerText.slice(3), 9, 5, true);
+            sub.classList.remove('subreddit');
             sub.classList.add('ft-console', 'ft-cell', 'ft-sub');
             newThing.appendChild(sub);
             //
