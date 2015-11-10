@@ -19,7 +19,7 @@ body {
 }
 
 /* Initially hide the siteTable and then display it once we've updated its contents */
-#siteTable, .side, .footer-parent, .listing-chooser, .debuginfo,
+#siteTable, #header, .side, .footer-parent, .listing-chooser, .debuginfo,
 .trending-subreddits, .sr-header-area, #progressIndicator {
     display: none !important;
 }
