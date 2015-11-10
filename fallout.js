@@ -142,15 +142,19 @@
         newSide.id = 'ftSidebar';
         newSide.classList.add('ft-sidebar', 'ft-console');
         let search = document.querySelector('.side #search input[type=text]');
+        search.setAttribute('placeholder', 'SEARCH');
         search.classList.add('ft-console', 'ft-search');
         newSide.appendChild(search);
         let submitLink = document.querySelector('.side .submit-link a');
+        submitLink.innerText = 'SUBMIT LINK';
         submitLink.classList.add('ft-console', 'ft-button', 'ft-submit');
         newSide.appendChild(submitLink);
         let submitText = document.querySelector('.side .submit-text a');
+        submitText.innerText = 'SUBMIT TEXT';
         submitText.classList.add('ft-console', 'ft-button', 'ft-submit');
         newSide.appendChild(submitText);
         let create = document.querySelector('.side .create a');
+        create.innerText = 'CREATE SRED';
         create.classList.add('ft-console', 'ft-button', 'ft-submit');
         newSide.appendChild(create);
         //
