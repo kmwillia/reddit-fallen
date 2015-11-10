@@ -5,19 +5,55 @@
     let screenLines = document.createElement('div');
     screenLines.classList.add('fallout-screenlines');
     document.body.appendChild(screenLines);
-    //Make changes to the story rows
+    //Create and swap the header
+    let oldHeader = document.getElementById('header');
+    let newHeader = convertHeader();
+    oldHeader.parentNode.replaceChild(newHeader, oldHeader);
+    //Create and swap the siteTables
     let oldTable = document.getElementById('siteTable');
     let newTable = convertTableRows();
-    //Change the previous and next buttons
     let newNav = convertPrevNext();
     newTable.appendChild(newNav);
-    //Swap tables
     oldTable.parentNode.replaceChild(newTable, oldTable);
+    //Create and swap the sidebar
+    let oldSide = document.getElementsByClassName('side')[0];
+    let newSide = convertSidebar();
+    oldSide.parentNode.replaceChild(newSide, oldSide);
+
+
+    function convertHeader() {
+        let newHeader = document.createElement('div');
+        newHeader.id = 'ftHeader';
+        newHeader.classList.add('ft-header');
+        let title = document.createElement('div');
+        let titleLink = document.createElement('a');
+        titleLink.innerText = 'REDDIT INDUSTRIES (TM) TERMLINK PROTOCOL';
+        titleLink.setAttribute('href', 'https://www.reddit.com/');
+        titleLink.classList.add('ft-console', 'ft-site-title');
+        title.appendChild(titleLink);
+        newHeader.appendChild(title);
+        if(document.getElementById('login-popup')) {
+            let login = document.createElement('div');
+            let loginLink = document.createElement('a');
+            loginLink.innerText = 'ENTER PASSWORD NOW';
+            loginLink.setAttribute('href', 'https://www.reddit.com/login');
+            loginLink.classList.add('ft-console', 'ft-login');
+            login.appendChild(loginLink);
+            newHeader.appendChild(login);
+            let tries = document.createElement('div');
+            tries.innerText = '4 ATTEMPT(S) LEFT: ◼ ◼ ◼ ◼';
+            tries.classList.add('ft-console', 'ft-tries');
+            newHeader.appendChild(tries);
+        }
+        //
+        return newHeader;
+    }
+
 
     function convertTableRows() {
-        var newSt = document.getElementById('siteTable').cloneNode(false);
+        let newSt = document.getElementById('siteTable').cloneNode(false);
         newSt.id = 'ftSiteTable';
-        var fragment = document.createDocumentFragment();
+        let fragment = document.createDocumentFragment();
         Array.from(document.querySelectorAll('#siteTable .thing'), (thing) => {
             let newThing = thing.cloneNode(false);
             newThing.classList.remove('link');
@@ -78,10 +114,10 @@
 
 
     function garbleText(text, rtnLength, matchLength, caps) {
-        var fillerChars = [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+        let fillerChars = [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
                             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
                             '{', '}', '[', ']', '<', '>', '?', '/', '\\', '.'];
-        var rtnString = text.slice(0, matchLength || rtnLength / 2 || text.length / 2);
+        let rtnString = text.slice(0, matchLength || rtnLength / 2 || text.length / 2);
         while(rtnString.length < rtnLength) {
             if(randomInt(0, 2) === 1) {
                 rtnString = rtnString + fillerChars[randomInt(0, fillerChars.length)];
@@ -98,6 +134,27 @@
 
     function randomInt(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
+    };
+
+
+    function convertSidebar() {
+        let newSide = document.createElement('div');
+        newSide.id = 'ftSidebar';
+        newSide.classList.add('ft-sidebar', 'ft-console');
+        let search = document.querySelector('.side #search input[type=text]');
+        search.classList.add('ft-console', 'ft-search');
+        newSide.appendChild(search);
+        let submitLink = document.querySelector('.side .submit-link a');
+        submitLink.classList.add('ft-console', 'ft-button', 'ft-submit');
+        newSide.appendChild(submitLink);
+        let submitText = document.querySelector('.side .submit-text a');
+        submitText.classList.add('ft-console', 'ft-button', 'ft-submit');
+        newSide.appendChild(submitText);
+        let create = document.querySelector('.side .create a');
+        create.classList.add('ft-console', 'ft-button', 'ft-submit');
+        newSide.appendChild(create);
+        //
+        return newSide;
     };
 
 })();
